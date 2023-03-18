@@ -2,7 +2,19 @@ const emailInput = document.querySelector(".email");
 const passwordInput = document.querySelector(".password");
 const btnLogin = document.querySelector(".btnLogin");
 const errorDisplay = document.querySelector(".error");
+const container_1 = document.querySelector(".container_1");
+const container_2 = document.querySelector(".container_2");
+const studentName = document.querySelector(".student--name");
+const studentLevel = document.querySelector(".student--level");
+const studentId = document.querySelector(".student--id");
+
 let studentData = "";
+
+const addStudentData = (data) => {
+  studentName.textContent = data.name;
+  studentLevel.textContent = data.level;
+  studentId.textContent = data.sittingNumber;
+};
 
 btnLogin.addEventListener("click", () => {
   studentData = "";
@@ -33,20 +45,14 @@ btnLogin.addEventListener("click", () => {
     .then((response) => response.json())
     .then((data) => (studentData = data.data))
     .then((data) => console.log(studentData))
+    .then((__) => {
+      if (studentData) {
+        addStudentData(studentData);
+        container_1.classList.add("hidden");
+        container_2.classList.remove("hidden");
+      } else {
+        errorDisplay.textContent = "البيانات التي ادخلتها ليست صحيحة";
+      }
+    })
     .catch((error) => console.error(error));
 });
-
-/*
-{
-  "_id": "6403a64941105e1b48fb988e",
-  "name": "محمد عادل محمد صالح",
-  "sittingNumber": 181600317,
-  "department": "كهرباء",
-  "division": "حاسبات وتحكم",
-  "level": 5,
-  "createdAt": "2023-03-04T20:12:57.818Z",
-  "updatedAt": "2023-03-04T20:12:57.818Z",
-  "passwordChangedAt": "2023-03-04T20:12:57.359Z",
-  "__v": 0
-}
-*/
