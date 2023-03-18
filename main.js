@@ -7,6 +7,7 @@ const container_2 = document.querySelector(".container_2");
 const studentName = document.querySelector(".student--name");
 const studentLevel = document.querySelector(".student--level");
 const studentId = document.querySelector(".student--id");
+let token = "";
 
 let studentData = "";
 
@@ -43,8 +44,12 @@ btnLogin.addEventListener("click", () => {
     requestOptions
   )
     .then((response) => response.json())
-    .then((data) => (studentData = data.data))
-    .then((data) => console.log(studentData))
+    .then((res) => {
+      console.log(res);
+      token = res.token;
+      studentData = res.data;
+    })
+    .then((__) => console.log(studentData, token))
     .then((__) => {
       if (studentData) {
         addStudentData(studentData);
