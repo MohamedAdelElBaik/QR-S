@@ -1,3 +1,5 @@
+const api = "https://kind-puce-python-shoe.cyclic.app/";
+
 const emailInput = document.querySelector(".email");
 const passwordInput = document.querySelector(".password");
 const btnLogin = document.querySelector(".btnLogin");
@@ -9,6 +11,7 @@ const studentName = document.querySelector(".student--name");
 const studentLevel = document.querySelector(".student--level");
 const studentId = document.querySelector(".student--id");
 const btnScan = document.querySelector(".btnScan");
+const requestStatus = document.querySelector(".requestStatus");
 
 let token = "";
 let studentData = "";
@@ -42,10 +45,7 @@ btnLogin.addEventListener("click", () => {
     }),
   };
 
-  fetch(
-    "https://kind-puce-python-shoe.cyclic.app/api/students/login",
-    requestOptions
-  )
+  fetch(`${api}api/students/login`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       console.log(res);
@@ -65,8 +65,45 @@ btnLogin.addEventListener("click", () => {
     .catch((error) => console.error(error));
 });
 
-const displayResult = (lecId) => {
-  console.log(data);
+const displayResult = (response) => {
+  if (response.status === "success") {
+    document.querySelector(".statusHeader").textContent = "حالة التسجيل";
+    requestStatus.textContent = "تم تسجيل حضورك بنجاح";
+  } else if (response.status === "fail") {
+    if (response.message === "You are already attended") {
+      document.querySelector(".statusHeader").textContent = "حالة التسجيل";
+      requestStatus.textContent = "انت بالفعل مسجل في هذه المحاضرة";
+    } else {
+      document.querySelector(".statusHeader").textContent = "حالة التسجيل";
+      requestStatus.textContent = "حدثت مشكلة حاول مرة اخري";
+    }
+  }
+};
+
+const sendAttendanceRequest = (lecId) => {
+  console.log(lecId);
+  console.log(token);
+
+  fetch(`${api}api/attendances`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      lectureId: lecId,
+      latitude: 2,
+      longitude: 4,
+    }),
+  })
+    .then((res) => res.json())
+    .then((response) => {
+      console.log(response);
+      displayResult(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 btnScan.addEventListener("click", () => {
@@ -84,7 +121,7 @@ btnScan.addEventListener("click", () => {
     lectureId = decodedText;
     console.log(`Scan result: ${decodedText}`, decodedResult);
     // ...
-    displayResult(decodedText);
+    sendAttendanceRequest(decodedText);
     html5QrcodeScanner.clear(decodedText);
     // ^ this will stop the scanner (video feed) and clear the scan area.
   }
