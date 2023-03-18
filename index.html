@@ -15,6 +15,16 @@
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+    <style>
+      #preview {
+        width: 500px;
+        height: 500px;
+        margin: 0px auto;
+      }
+    </style>
+
     <title>Document</title>
   </head>
   <body>
@@ -37,10 +47,14 @@
         <img src=".\web_ios_img\user.png" />
         <h3 class="student--name"></h3>
         <p class="student--level"></p>
-        <button type="button" class="scan_qr btn">SCAN QR</button>
+        <button type="button" class="scan_qr btn btnScan">SCAN QR</button>
+      </div>
+      <div class="container_3 hidden">
+        <video id="preview"></video>
+        <div class="warning lectureIdDisplay"></div>
       </div>
     </div>
 
-    <script src="main.js"></script>
+    <script src="main.js" type="module"></script>
   </body>
 </html>

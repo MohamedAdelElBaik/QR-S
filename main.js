@@ -4,12 +4,15 @@ const btnLogin = document.querySelector(".btnLogin");
 const errorDisplay = document.querySelector(".error");
 const container_1 = document.querySelector(".container_1");
 const container_2 = document.querySelector(".container_2");
+const container_3 = document.querySelector(".container_3");
 const studentName = document.querySelector(".student--name");
 const studentLevel = document.querySelector(".student--level");
 const studentId = document.querySelector(".student--id");
-let token = "";
+const btnScan = document.querySelector(".btnScan");
 
+let token = "";
 let studentData = "";
+let lectureId = "";
 
 const addStudentData = (data) => {
   studentName.textContent = data.name;
@@ -60,4 +63,52 @@ btnLogin.addEventListener("click", () => {
       }
     })
     .catch((error) => console.error(error));
+});
+
+btnScan.addEventListener("click", () => {
+  container_2.classList.add("hidden");
+  container_3.classList.remove("hidden");
+  console.log("clicked");
+  var scanner = new Instascan.Scanner({
+    video: document.getElementById("preview"),
+    scanPeriod: 5,
+    mirror: true,
+  });
+  scanner.addListener("scan", function (content) {
+    lectureId = content;
+    console.log(lectureId);
+
+    document.querySelector(".lectureIdDisplay").textContent = lectureId;
+
+    // alert(content);
+    //window.location.href=content;
+  });
+  Instascan.Camera.getCameras()
+    .then(function (cameras) {
+      if (cameras.length > 0) {
+        scanner.start(cameras[0]);
+        $('[name="options"]').on("change", function () {
+          if ($(this).val() == 1) {
+            if (cameras[0] != "") {
+              scanner.start(cameras[0]);
+            } else {
+              alert("No Front camera found!");
+            }
+          } else if ($(this).val() == 2) {
+            if (cameras[1] != "") {
+              scanner.start(cameras[1]);
+            } else {
+              alert("No Back camera found!");
+            }
+          }
+        });
+      } else {
+        console.error("No cameras found.");
+        alert("No cameras found.");
+      }
+    })
+    .catch(function (e) {
+      console.error(e);
+      alert(e);
+    });
 });
