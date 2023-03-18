@@ -80,6 +80,11 @@ btnScan.addEventListener("click", () => {
 
     document.querySelector(".lectureIdDisplay").textContent = lectureId;
 
+    if (lectureId) {
+      scanner.stop(); // Stop the camera if lectureId has a truthy value
+      document.querySelector(".video-container").classList.add("hidden");
+    }
+
     // alert(content);
     //window.location.href=content;
   });
@@ -87,26 +92,28 @@ btnScan.addEventListener("click", () => {
     .then(function (cameras) {
       if (cameras.length > 0) {
         scanner.start(cameras[0]);
-        $('[name="options"]').on("change", function () {
-          if ($(this).val() == 1) {
-            if (cameras[0] != "") {
-              scanner.start(cameras[0]);
-            } else {
-              alert("No Front camera found!");
-            }
-          } else if ($(this).val() == 2) {
-            if (cameras[1] != "") {
-              scanner.start(cameras[1]);
-            } else {
-              alert("No Back camera found!");
-            }
-          }
-        });
+        console.log(lectureId);
+        // $('[name="options"]').on("change", function () {
+        //   if ($(this).val() == 1) {
+        //     if (cameras[0] != "") {
+        //       scanner.start(cameras[0]);
+        //     } else {
+        //       alert("No Front camera found!");
+        //     }
+        //   } else if ($(this).val() == 2) {
+        //     if (cameras[1] != "") {
+        //       scanner.start(cameras[1]);
+        //     } else {
+        //       alert("No Back camera found!");
+        //     }
+        // }
+        // });
       } else {
         console.error("No cameras found.");
         alert("No cameras found.");
       }
     })
+    .then((res) => console.log(res))
     .catch(function (e) {
       console.error(e);
       alert(e);
