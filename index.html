@@ -15,7 +15,9 @@
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <!-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> -->
+
+    <script src="./html5-qrcode.min.js"></script>
 
     <style>
       #preview {
@@ -50,7 +52,8 @@
         <button type="button" class="scan_qr btn btnScan">SCAN QR</button>
       </div>
       <div class="container_3 hidden">
-        <video id="preview" class="video-container"></video>
+        <div style="width: 400px" id="reader" class="video-container"></div>
+
         <div class="warning lectureIdDisplay"></div>
       </div>
     </div>

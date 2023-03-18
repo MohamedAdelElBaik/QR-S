@@ -65,57 +65,29 @@ btnLogin.addEventListener("click", () => {
     .catch((error) => console.error(error));
 });
 
+const displayResult = (lecId) => {
+  console.log(data);
+};
+
 btnScan.addEventListener("click", () => {
   container_2.classList.add("hidden");
   container_3.classList.remove("hidden");
   console.log("clicked");
-  var scanner = new Instascan.Scanner({
-    video: document.getElementById("preview"),
-    scanPeriod: 5,
-    mirror: true,
+  var html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: 350,
+    aspectRatio: 1.777778,
   });
-  scanner.addListener("scan", function (content) {
-    lectureId = content;
-    console.log(lectureId);
 
-    document.querySelector(".lectureIdDisplay").textContent = lectureId;
+  function onScanSuccess(decodedText, decodedResult) {
+    // Handle on success condition with the decoded text or result.
+    lectureId = decodedText;
+    console.log(`Scan result: ${decodedText}`, decodedResult);
+    // ...
+    displayResult(decodedText);
+    html5QrcodeScanner.clear(decodedText);
+    // ^ this will stop the scanner (video feed) and clear the scan area.
+  }
 
-    if (lectureId) {
-      scanner.stop(); // Stop the camera if lectureId has a truthy value
-      document.querySelector(".video-container").classList.add("hidden");
-    }
-
-    // alert(content);
-    //window.location.href=content;
-  });
-  Instascan.Camera.getCameras()
-    .then(function (cameras) {
-      if (cameras.length > 0) {
-        scanner.start(cameras[0]);
-        console.log(lectureId);
-        // $('[name="options"]').on("change", function () {
-        //   if ($(this).val() == 1) {
-        //     if (cameras[0] != "") {
-        //       scanner.start(cameras[0]);
-        //     } else {
-        //       alert("No Front camera found!");
-        //     }
-        //   } else if ($(this).val() == 2) {
-        //     if (cameras[1] != "") {
-        //       scanner.start(cameras[1]);
-        //     } else {
-        //       alert("No Back camera found!");
-        //     }
-        // }
-        // });
-      } else {
-        console.error("No cameras found.");
-        alert("No cameras found.");
-      }
-    })
-    .then((res) => console.log(res))
-    .catch(function (e) {
-      console.error(e);
-      alert(e);
-    });
+  html5QrcodeScanner.render(onScanSuccess);
 });
