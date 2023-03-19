@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./web_ios_img/logo2.png" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,7 +28,7 @@
       }
     </style>
 
-    <title>Document</title>
+    <title>Suez Canal Attendance</title>
   </head>
   <body>
     <div class="main">
@@ -54,10 +55,40 @@
       <div class="container_3 hidden">
         <div style="width: 400px" id="reader" class="video-container"></div>
 
-        <div class="lectureIdDisplay">
+        <!-- <div class="lectureIdDisplay">
           <h2 class="statusHeader"></h2>
           <p class="requestStatus"></p>
-        </div>
+        </div> -->
+      </div>
+
+      <!-- Start Done-Scan container -->
+      <div class="Done-Scan__container successMessage hidden">
+        <img src="./web_ios_img/succes.png" alt="succes" />
+        <h3>تم تسجيل حضورك بنجاح !!</h3>
+        <button
+          type="button"
+          class="btn Done-Scan__container--back btnBackToMain"
+        >
+          الرجوع للقائمة الرئيسية
+        </button>
+      </div>
+      <!-- End Scan Qr container -->
+
+      <!-- Start fail-Scan container -->
+      <div class="fail-Scan__container failMessage hidden">
+        <img src="./web_ios_img/error.png" alt="succes" />
+        <h3 class="statusHeader"></h3>
+        <p class="requestStatus"></p>
+        <button type="button" class="scan_qr btn btnScanAgain hidden">
+          SCAN QR
+        </button>
+
+        <button
+          type="button"
+          class="btn fail-Scan__container--back btnBackToMain"
+        >
+          الرجوع للقائمة الرئيسية
+        </button>
       </div>
     </div>
 

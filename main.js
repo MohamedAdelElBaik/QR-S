@@ -11,7 +11,12 @@ const studentName = document.querySelector(".student--name");
 const studentLevel = document.querySelector(".student--level");
 const studentId = document.querySelector(".student--id");
 const btnScan = document.querySelector(".btnScan");
+const btnScanAgain = document.querySelector(".btnScanAgain");
 const requestStatus = document.querySelector(".requestStatus");
+const btnBackToMain = document.querySelectorAll(".btnBackToMain");
+const successMessage = document.querySelector(".successMessage");
+const failMessage = document.querySelector(".failMessage");
+const statusHeader = document.querySelector(".statusHeader");
 
 let token = "";
 let studentData = "";
@@ -67,15 +72,16 @@ btnLogin.addEventListener("click", () => {
 
 const displayResult = (response) => {
   if (response.status === "success") {
-    document.querySelector(".statusHeader").textContent = "حالة التسجيل";
-    requestStatus.textContent = "تم تسجيل حضورك بنجاح";
+    successMessage.classList.remove("hidden");
   } else if (response.status === "fail") {
+    failMessage.classList.remove("hidden");
     if (response.message === "You are already attended") {
-      document.querySelector(".statusHeader").textContent = "حالة التسجيل";
       requestStatus.textContent = "انت بالفعل مسجل في هذه المحاضرة";
+      // requestStatus.textContent = ;
     } else {
-      document.querySelector(".statusHeader").textContent = "حالة التسجيل";
-      requestStatus.textContent = "حدثت مشكلة حاول مرة اخري";
+      btnScanAgain.classList.remove("hidden");
+      statusHeader.textContent = "حدثت مشكلة !!";
+      requestStatus.textContent = "حاول مره اخري";
     }
   }
 };
@@ -117,14 +123,26 @@ btnScan.addEventListener("click", () => {
   });
 
   function onScanSuccess(decodedText, decodedResult) {
-    // Handle on success condition with the decoded text or result.
     lectureId = decodedText;
     console.log(`Scan result: ${decodedText}`, decodedResult);
-    // ...
+
     sendAttendanceRequest(decodedText);
     html5QrcodeScanner.clear(decodedText);
-    // ^ this will stop the scanner (video feed) and clear the scan area.
   }
 
   html5QrcodeScanner.render(onScanSuccess);
+});
+
+btnBackToMain.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    successMessage.classList.add("hidden");
+    failMessage.classList.add("hidden");
+    container_2.classList.remove("hidden");
+  });
+});
+
+btnScanAgain.addEventListener("click", () => {
+  successMessage.classList.add("hidden");
+  failMessage.classList.add("hidden");
+  container_2.classList.remove("hidden");
 });
